@@ -179,10 +179,18 @@ FOUNDATION_EXPORT const unsigned char WeChatPluginVersionString[];
 
 @end
 
+@interface MMHandoffButton : NSButton
+
+@end
+
 @interface MMMainViewController : NSViewController
 @property(retain, nonatomic) MMChatsViewController *chatsViewController;
+@property(nonatomic) __weak MMHandoffButton *handoffButton; // @synthesize handoffButton=_handoffButton;
 - (void)viewDidLoad;
 - (void)dealloc;
+- (void)onReceiveNewHandoff:(id)arg1;
+- (void)onUpdateHandoffExpt:(BOOL)arg1;
+- (void)showHandoffView:(id)arg1;
 @end
 
 @interface WeChat : NSObject
@@ -196,6 +204,7 @@ FOUNDATION_EXPORT const unsigned char WeChatPluginVersionString[];
 - (void)onAuthOK:(BOOL)arg1;
 - (void)checkForUpdatesInBackground;
 - (void)setupCheckUpdateIfNeeded;
+- (BOOL)isTaskProgress;
 @end
 
 @interface ContactStorage : NSObject
@@ -732,7 +741,7 @@ forHTTPHeaderField:(NSString *)field;
 @end
 
 
-@interface MMSidebarRowView : NSView
+@interface MMSidebarRowView : NSTableRowView
 @property (nonatomic, strong) MMView *containerView;
 @end
 
@@ -785,3 +794,46 @@ forHTTPHeaderField:(NSString *)field;
 @property(retain, nonatomic) NSTextField *groupChatNickNameLabel;
 @end
 
+@interface MMSessionPickerListRowView : NSObject
+@property(retain, nonatomic) NSTextField *sessionNameField; // @synthesize sessionNameField=_sessionNameField;
+@end
+
+
+@interface MMChatDetailMemberRowView : NSObject
+@property(retain, nonatomic) NSTextField *nameField;
+@end
+
+@interface MMSearchTableCellView : NSObject
+@property(retain, nonatomic) NSString *queryText; // @synthesize queryText=_queryText;
+@property(nonatomic) unsigned long long subRanking; // @synthesize subRanking=_subRanking;
+@property(nonatomic) unsigned long long ranking; // @synthesize ranking=_ranking;
+@property(retain, nonatomic) NSString *keyword; // @synthesize keyword=_keyword;
+@property(retain, nonatomic) MMSearchResultItem *dataItem; // @synthesize dataItem=_dataItem;
+@property(retain, nonatomic) NSColor *backgroundColor; // @synthesize backgroundColor=_backgroundColor;
+
+@end
+
+@interface MMViewController : NSViewController
+
+@end
+
+@interface MMChatDetailSplitViewController : NSViewController
+@property(nonatomic) __weak MMViewController *placeHolderViewController;
+@end
+
+@interface MMSidebarContactRowView : MMSidebarRowView
+- (void)dealloc;
+- (void)prepareForReuse;
+- (void)mouseDown:(id)arg1;
+- (void)resizeSubviewsWithOldSize:(struct CGSize)arg1;
+- (void)relayoutSubView;
+- (id)initWithFrame:(struct CGRect)arg1;
+@end
+
+@interface MMGlobalChatManagerWindowController : NSWindowController
+
+@end
+
+@interface WeChatApplication : NSApplication
+- (BOOL)isMiniProgramProcess;
+@end
